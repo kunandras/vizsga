@@ -7,11 +7,12 @@ class Database
     private static string $dbuser = 'root';
     private static string $dbpass = '';
     private static PDO $db_singleton;
-    
+
     /**
+     * @return PDO
      * @throws PDOException
      */
-    public static function getInstance()
+    public static function getInstance(): PDO
     {
         if (empty(self::$db_singleton)) {
             try {
