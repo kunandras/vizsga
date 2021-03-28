@@ -160,7 +160,11 @@ class UserMapper
         return false;
     }
 
-    private function passwordHash(string $password)
+    /**
+     * @param string $password
+     * @return string
+     */
+    private function passwordHash(string $password): string
     {
         $salt = 'x$-ĐÍ^?á?Gds(+';
         for ($i = 0; $i < 1234; $i++) {
