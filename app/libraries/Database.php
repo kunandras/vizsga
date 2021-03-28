@@ -7,7 +7,10 @@ class Database
     private static string $dbuser = 'root';
     private static string $dbpass = '';
     private static $dsn;
-
+    
+    /**
+     * @throws PDOException
+     */
     public static function getInstance()
     {
         self::$dsn = 'mysql:host=' . self::$dbhost . ';dbname=' . self::$dbname . ';charset=utf8';
@@ -18,18 +21,4 @@ class Database
         }
         return self::$dsn;
     }
-
-    /**
-     * @throws PDOException
-     */
-    /*
-
-    public static function getInstance() {
-        if (self::$db_singleton == null) {
-            self::$db_singleton = new PDO("mysql:host=" . self::$dbhost . ";dbname=" . self::$dbname . ";charset=utf8", self::$dbuser, self::$dbpass, [
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-            ]);
-        }
-        return self::$db_singleton;
-    }*/
 }
