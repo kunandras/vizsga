@@ -70,6 +70,7 @@ class UserMapper
         $username = $user->getUsername();
         $email = $user->getEmail();
         $password = $user->getPassword();
+        $password = self::passwordHash($password);
 
         $query = $this->db->prepare('INSERT INTO users (`username`, `email`, `password`, `ip`) VALUES (:username, :email, :password, :ip)');
         $query->bindParam(':username', $username, PDO::PARAM_STR);
@@ -157,5 +158,14 @@ class UserMapper
             return true;
         }
         return false;
+    }
+
+    private function passwordHash(string $password)
+    {
+        $salt = 'x$-ĐÍ^?á?Gds(+';
+        for ($i = 0; $i < 1234; $i++) {
+            $password = md5(sha1($password . $salt) . $salt);
+        }
+        return $password;
     }
 }
