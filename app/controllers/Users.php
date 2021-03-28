@@ -2,12 +2,10 @@
 
 class Users extends Controller
 {
-    private User $user;
     private UserMapper $userMapper;
 
     public function __construct()
     {
-        $this->user = new User();
         $this->userMapper = new UserMapper(Database::getInstance());
     }
 
@@ -35,13 +33,14 @@ class Users extends Controller
             $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_SPECIAL_CHARS);
             $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
             $password = filter_input(INPUT_POST, 'repassword', FILTER_SANITIZE_SPECIAL_CHARS);
-            $this->user->setUsername($username);
-            $this->user->setEmail($email);
-            $this->user->setPassword($password);
+            $user = new User();
+            $user->setUsername($username);
+            $user->setEmail($email);
+            $user->setPassword($password);
             try {
-                $datas = $this->validateRegister($this->user);
-                if (!$this->userMapper->existsUsername($username) && !$this->userMapper->existsEmail($email)) {
-                    $this->userMapper->register($this->user);
+                $datas = $this->validateRegister($user);
+                if (!$this->userMapper->getByUsername($username) && !$this->userMapper->getByEmail($email)) {
+                    $this->userMapper->save($user);
                 }
             } catch (Exception $e) {
                 throw new Exception('Sikertelen regisztráció: ' . $e->getMessage());
@@ -63,7 +62,7 @@ class Users extends Controller
         if (!empty($loginUserData)) {
             $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_SPECIAL_CHARS);
             $password = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_SPECIAL_CHARS);
-            if ($this->userMapper->userIsValid($username, $password)) {
+            if ($this->userMapper->getByUsernameAndPassword($username, $password)) {
                 $this->view('forums/index');
             }
         }
