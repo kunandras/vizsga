@@ -166,7 +166,7 @@ class UserMapper
      */
     private function passwordHash(string $password): string
     {
-        $salt = 'x$-ĐÍ^?á?Gds(+';
+        $salt = 'x$-DI?a!Gd-(+';
         for ($i = 0; $i < 1234; $i++) {
             $password = md5(sha1($password . $salt) . $salt);
         }
